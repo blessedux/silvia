@@ -3,81 +3,94 @@
 import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { HiChip, HiUserGroup, HiBookOpen, HiPlusCircle } from 'react-icons/hi';
+import HeroSection from './components/HeroSection';
+import ValuePropSection from './components/ValuePropSection';
+import BenefitsSection from './components/BenefitsSection';
+import MemorySection from './components/MemorySection';
+import DemoSection from './components/DemoSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const featuresRef = useRef(null);
   const demoRef = useRef(null);
+  const memoryRef = useRef(null);
+  const valuePropRef = useRef(null);
+  const heroTriggerRef = useRef(null);
+  const valuePropTriggerRef = useRef(null);
+  const featuresTriggerRef = useRef(null);
+  const memoryTriggerRef = useRef(null);
+  const demoTriggerRef = useRef(null);
+  const [activeSection, setActiveSection] = useState('hero');
+  const contentRef = useRef(null);
 
   useEffect(() => {
-    // Title fade out
-    gsap.to(titleRef.current, {
-      scrollTrigger: {
-        trigger: titleRef.current,
-        start: "top top",
-        end: "+=200",
-        scrub: 1,
-        pin: false
-      },
-      opacity: 0
+    // Clean up previous triggers
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+    // Hero section: visible at the top
+    ScrollTrigger.create({
+      trigger: heroTriggerRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      onEnter: () => setActiveSection('hero'),
+      onEnterBack: () => setActiveSection('hero'),
     });
 
-    // Subtitle fade out
-    gsap.to(subtitleRef.current, {
-      scrollTrigger: {
-        trigger: subtitleRef.current,
-        start: "top top",
-        end: "+=200",
-        scrub: 1,
-        pin: false
-      },
-      opacity: 0
+    // Value prop section
+    ScrollTrigger.create({
+      trigger: valuePropTriggerRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      onEnter: () => setActiveSection('valueprop'),
+      onEnterBack: () => setActiveSection('valueprop'),
     });
 
-    // Features section fade in/out
-    gsap.fromTo(featuresRef.current, 
-      {
-        opacity: 0
-      },
-      {
-        scrollTrigger: {
-          trigger: featuresRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-          pin: true,
-          pinSpacing: false
-        },
-        opacity: 1
-      }
-    );
+    // Benefits section: after hero
+    ScrollTrigger.create({
+      trigger: featuresTriggerRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      onEnter: () => setActiveSection('features'),
+      onEnterBack: () => setActiveSection('features'),
+    });
 
-    // Demo section fade in/out
-    gsap.fromTo(demoRef.current, 
-      {
-        opacity: 0
-      },
-      {
-        scrollTrigger: {
-          trigger: demoRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-          pin: true,
-          pinSpacing: false
-        },
-        opacity: 1
-      }
-    );
+    // Memory repository section
+    ScrollTrigger.create({
+      trigger: memoryTriggerRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      onEnter: () => setActiveSection('memory'),
+      onEnterBack: () => setActiveSection('memory'),
+    });
+
+    // Demo section: after benefits
+    ScrollTrigger.create({
+      trigger: demoTriggerRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      onEnter: () => setActiveSection('demo'),
+      onEnterBack: () => setActiveSection('demo'),
+    });
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: 'power2.out' }
+      );
+    }
+  }, [activeSection]);
 
   return (
     <div className="min-h-screen bg-black relative">
@@ -101,80 +114,22 @@ export default function Home() {
       
       {/* Scrollable content */}
       <div className="relative z-50">
-        {/* Hero section with fading title */}
-        <div className="min-h-screen flex flex-col items-center">
-          <div className="text-center mt-20 fixed">
-            <h1 ref={titleRef} className="text-6xl md:text-7xl font-bold mb-4 text-white">
-              Silvia
-            </h1>
-            <p ref={subtitleRef} className="text-xl md:text-2xl max-w-2xl text-white">
-              Tu asistente de IA para el desarrollo personal y profesional
-            </p>
-          </div>
-        </div>
+        {/* Invisible scroll triggers for each section */}
+        <div className="min-h-screen" ref={heroTriggerRef}></div>
+        <div className="min-h-screen" ref={valuePropTriggerRef}></div>
+        <div className="min-h-screen" ref={featuresTriggerRef}></div>
+        <div className="min-h-screen" ref={memoryTriggerRef}></div>
+        <div className="min-h-screen" ref={demoTriggerRef}></div>
 
-        {/* Features section */}
-        <div ref={featuresRef} className="min-h-screen flex items-center justify-center px-4">
-          <div className="max-w-4xl mx-auto text-white space-y-8">
-            <h2 className="text-4xl font-bold text-center mb-8">
-              Beneficios y Características
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl">
-                <h3 className="text-2xl font-semibold mb-4">Asistencia Personalizada</h3>
-                <p className="text-lg">Recibe apoyo adaptado a tus necesidades específicas y objetivos personales.</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl">
-                <h3 className="text-2xl font-semibold mb-4">Desarrollo Profesional</h3>
-                <p className="text-lg">Mejora tus habilidades y avanza en tu carrera con orientación experta.</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl">
-                <h3 className="text-2xl font-semibold mb-4">Aprendizaje Continuo</h3>
-                <p className="text-lg">Accede a recursos y conocimientos actualizados en cualquier momento.</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl">
-                <h3 className="text-2xl font-semibold mb-4">Soporte 24/7</h3>
-                <p className="text-lg">Asistencia disponible cuando la necesites, sin límites de horario.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Demo section */}
-        <div ref={demoRef} className="min-h-screen flex items-center justify-center px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-              <h2 className="text-4xl font-bold text-center mb-8 text-white">
-                Demo de Conversación
-              </h2>
-              <div className="bg-black/50 rounded-lg p-6 space-y-4">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center">
-                    <span className="text-white">S</span>
-                  </div>
-                  <div className="bg-white/10 rounded-lg p-4 max-w-[80%]">
-                    <p className="text-white">Hola, soy Silvia. ¿En qué puedo ayudarte hoy?</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4 justify-end">
-                  <div className="bg-white/10 rounded-lg p-4 max-w-[80%]">
-                    <p className="text-white">Me gustaría aprender más sobre desarrollo personal</p>
-                  </div>
-                  <div className="bg-green-500 rounded-full w-8 h-8 flex items-center justify-center">
-                    <span className="text-white">U</span>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center">
-                    <span className="text-white">S</span>
-                  </div>
-                  <div className="bg-white/10 rounded-lg p-4 max-w-[80%]">
-                    <p className="text-white">¡Claro! Podemos trabajar en diferentes áreas como gestión del tiempo, desarrollo de hábitos positivos, y mejora de la productividad. ¿Por cuál te gustaría comenzar?</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Single fixed, centered container for the active section */}
+        <div ref={contentRef} className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          {activeSection === 'hero' && (
+            <HeroSection titleRef={titleRef} subtitleRef={subtitleRef} />
+          )}
+          {activeSection === 'valueprop' && <ValuePropSection />}
+          {activeSection === 'features' && <BenefitsSection />}
+          {activeSection === 'memory' && <MemorySection />}
+          {activeSection === 'demo' && <DemoSection />}
         </div>
       </div>
     </div>
