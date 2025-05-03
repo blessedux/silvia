@@ -7,6 +7,7 @@ import { HiChip, HiUserGroup, HiBookOpen, HiPlusCircle } from 'react-icons/hi';
 import HeroSection from './components/HeroSection';
 import ValuePropSection from './components/ValuePropSection';
 import BenefitsSection from './components/BenefitsSection';
+import GallerySection from './components/GallerySection';
 import MemorySection from './components/MemorySection';
 import DemoSection from './components/DemoSection';
 
@@ -23,6 +24,7 @@ export default function Home() {
   const heroTriggerRef = useRef(null);
   const valuePropTriggerRef = useRef(null);
   const featuresTriggerRef = useRef(null);
+  const galleryTriggerRef = useRef(null);
   const memoryTriggerRef = useRef(null);
   const demoTriggerRef = useRef(null);
   const [activeSection, setActiveSection] = useState('hero');
@@ -57,6 +59,15 @@ export default function Home() {
       end: 'bottom center',
       onEnter: () => setActiveSection('features'),
       onEnterBack: () => setActiveSection('features'),
+    });
+
+    // Gallery section: after benefits
+    ScrollTrigger.create({
+      trigger: galleryTriggerRef.current,
+      start: 'top center',
+      end: 'bottom center',
+      onEnter: () => setActiveSection('gallery'),
+      onEnterBack: () => setActiveSection('gallery'),
     });
 
     // Memory repository section
@@ -118,6 +129,7 @@ export default function Home() {
         <div className="min-h-screen" ref={heroTriggerRef}></div>
         <div className="min-h-screen" ref={valuePropTriggerRef}></div>
         <div className="min-h-screen" ref={featuresTriggerRef}></div>
+        <div className="min-h-screen" ref={galleryTriggerRef}></div>
         <div className="min-h-screen" ref={memoryTriggerRef}></div>
         <div className="min-h-screen" ref={demoTriggerRef}></div>
 
@@ -128,6 +140,7 @@ export default function Home() {
           )}
           {activeSection === 'valueprop' && <ValuePropSection />}
           {activeSection === 'features' && <BenefitsSection />}
+          {activeSection === 'gallery' && <GallerySection />}
           {activeSection === 'memory' && <MemorySection />}
           {activeSection === 'demo' && <DemoSection />}
         </div>
