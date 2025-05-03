@@ -8,7 +8,7 @@ import HeroSection from './components/HeroSection';
 import ValuePropSection from './components/ValuePropSection';
 import BenefitsSection from './components/BenefitsSection';
 import GallerySection from './components/GallerySection';
-import MemorySection from './components/MemorySection';
+import RoadmapSection from './components/RoadmapSection';
 import DemoSection from './components/DemoSection';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,13 +19,13 @@ export default function Home() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const featuresRef = useRef(null);
   const demoRef = useRef(null);
-  const memoryRef = useRef(null);
+  const roadmapRef = useRef(null);
   const valuePropRef = useRef(null);
   const heroTriggerRef = useRef(null);
   const valuePropTriggerRef = useRef(null);
   const featuresTriggerRef = useRef(null);
   const galleryTriggerRef = useRef(null);
-  const memoryTriggerRef = useRef(null);
+  const roadmapTriggerRef = useRef(null);
   const demoTriggerRef = useRef(null);
   const [activeSection, setActiveSection] = useState('hero');
   const contentRef = useRef(null);
@@ -72,11 +72,11 @@ export default function Home() {
 
     // Memory repository section
     ScrollTrigger.create({
-      trigger: memoryTriggerRef.current,
+      trigger: roadmapTriggerRef.current,
       start: 'top center',
       end: 'bottom center',
-      onEnter: () => setActiveSection('memory'),
-      onEnterBack: () => setActiveSection('memory'),
+      onEnter: () => setActiveSection('roadmap'),
+      onEnterBack: () => setActiveSection('roadmap'),
     });
 
     // Demo section: after benefits
@@ -130,7 +130,7 @@ export default function Home() {
         <div className="min-h-screen" ref={valuePropTriggerRef}></div>
         <div className="min-h-screen" ref={featuresTriggerRef}></div>
         <div className="min-h-screen" ref={galleryTriggerRef}></div>
-        <div className="min-h-screen" ref={memoryTriggerRef}></div>
+        <div className="min-h-screen" ref={roadmapTriggerRef}></div>
         <div className="min-h-screen" ref={demoTriggerRef}></div>
 
         {/* Single fixed, centered container for the active section */}
@@ -141,8 +141,30 @@ export default function Home() {
           {activeSection === 'valueprop' && <ValuePropSection />}
           {activeSection === 'features' && <BenefitsSection />}
           {activeSection === 'gallery' && <GallerySection />}
-          {activeSection === 'memory' && <MemorySection />}
+          {activeSection === 'roadmap' && <RoadmapSection />}
           {activeSection === 'demo' && <DemoSection />}
+        </div>
+
+        {/* Mobile scrollable content */}
+        <div className="md:hidden">
+          <div className="min-h-screen flex items-center justify-center">
+            <HeroSection titleRef={titleRef} subtitleRef={subtitleRef} />
+          </div>
+          <div className="min-h-screen flex items-center justify-center">
+            <ValuePropSection />
+          </div>
+          <div className="min-h-screen flex items-center justify-center">
+            <BenefitsSection />
+          </div>
+          <div className="min-h-screen flex items-center justify-center">
+            <GallerySection />
+          </div>
+          <div className="min-h-screen flex items-center justify-center">
+            <RoadmapSection />
+          </div>
+          <div className="min-h-screen flex items-center justify-center">
+            <DemoSection />
+          </div>
         </div>
       </div>
     </div>

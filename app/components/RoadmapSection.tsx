@@ -33,19 +33,19 @@ const RoadmapSection: React.FC = () => {
   return (
     <div
       ref={sectionRef}
-      className="min-h-screen flex items-center bg-black text-white p-8"
+      className="min-h-screen flex items-center bg-black text-white p-4 md:p-8"
     >
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-4 md:gap-8">
         <div className="w-full md:w-3/5">
           <img 
             src="/roadmap.png" 
             alt="Roadmap" 
-            className="max-w-[570px] w-full h-auto rounded-2xl shadow-lg border border-gray-700" 
+            className="max-w-[570px] w-full h-auto rounded-2xl shadow-lg border border-gray-700 mx-auto" 
           />
         </div>
-        <div className="w-full md:w-2/5 text-center md:text-left">
-          <h2 className="text-3xl font-bold mb-4">Transformando la Vida de Nuestros Mayores</h2>
-          <p className="text-lg text-gray-300 leading-relaxed">
+        <div className="w-full md:w-2/5 text-center md:text-left px-4 md:px-0">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Transformando la Vida de Nuestros Mayores</h2>
+          <p className="text-base md:text-lg text-gray-300 leading-relaxed">
             Con nuestra plataforma, miles de adultos mayores en la comuna de Vitacura podrán acceder a beneficios municipales de forma sencilla, mantener conversaciones significativas con una IA personalizada, y recibir el apoyo que necesitan. Este es solo el comienzo de una revolución en el cuidado y acompañamiento de nuestros mayores, donde la tecnología se convierte en un puente hacia una vida más plena y conectada.
           </p>
         </div>
